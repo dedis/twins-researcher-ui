@@ -57,11 +57,11 @@ export default () => {
             case 1:
                 return <Button disabled={true}>Information shared</Button>
             case 2:
-                return <Button onClick={() => ondecrypt(did)}>Decrypt</Button>
+                return <Button disabled={disabled} onClick={() => ondecrypt(did)}>Decrypt</Button>
             case 3:
                 return <Button disabled={true}>Consent Denied</Button>
             case 4:
-                return <Button disabled={disabled} onClick={() => download(did)}>Download</Button>
+                return <Button onClick={() => download(did)}>Download</Button>
         }
     }
 
