@@ -9,6 +9,7 @@ export type Cohort = {
     moreInfoLink: string
     acceptText: string
     denyText: string
+    size: number
 }
 
 export interface CohortUpdate {

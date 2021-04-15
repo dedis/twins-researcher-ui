@@ -20,6 +20,7 @@ const statusName: Record<number, string> = {
 export default () => {
     const { id } = useParams();
     const participants = useSelector((state: RootState) => state.participants.participants)
+    const cohortSize = useSelector((state: RootState) => state.cohorts.cohortsById[id].size)
     const isLoading = useSelector((state: RootState) => state.participants.isLoading)
     const dispatch = useDispatch();
 
@@ -66,17 +67,20 @@ export default () => {
     }
 
     return (
-        <Table bordered hover>
-            <thead>
-                <tr>
-                    <th>DID</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {participants.map(participant => <Single data={participant}></Single>)}
-            </tbody>
-        </Table>
+        <div>
+            <p>Sent an invite to <b>{cohortSize}</b> members. Received a reply from <b>{participants.length}</b> members</p>
+            <Table bordered hover>
+                <thead>
+                    <tr>
+                        <th>DID</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {participants.map(participant => <Single data={participant}></Single>)}
+                </tbody>
+            </Table>
+        </div>
     )
 }
