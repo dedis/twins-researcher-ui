@@ -68,7 +68,7 @@ export default () => {
 
     return (
         <div>
-            <p>Sent an invite to <b>{cohortSize}</b> members. Received a reply from <b>{participants.length}</b> members</p>
+            <p>Sent an invite to <b>{cohortSize}</b> member(s). Received a reply from <b>{participants.length}</b> member(s)</p>
             <Table bordered hover>
                 <thead>
                     <tr>
