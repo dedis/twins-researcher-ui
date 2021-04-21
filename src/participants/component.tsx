@@ -6,6 +6,7 @@ import { Participant, fetchParticipants, share, reencrypt } from './participantS
 import { useParams } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import { backendURL } from '../api/config';
+import { fetchCohorts } from '../cohorts/cohortSlice';
 
 const statusName: Record<number, string> = {
     0: 'Information Requested',
@@ -20,12 +21,24 @@ const statusName: Record<number, string> = {
 export default () => {
     const { id } = useParams();
     const participants = useSelector((state: RootState) => state.participants.participants)
+    const cohortSize = useSelector((state: RootState) => {
+        if (state.cohorts.cohortsById[id] !== undefined) {
+            return state.cohorts.cohortsById[id].size
+        }
+        return -1;
+    })
     const isLoading = useSelector((state: RootState) => state.participants.isLoading)
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(fetchParticipants(id))
     }, [id, dispatch])
+
+    useEffect(() => {
+        if (cohortSize == -1) {
+            dispatch(fetchCohorts())
+        }
+    }, [cohortSize, dispatch])
 
     const Single = (props: any) => {
         const data = props.data as Participant;
@@ -66,17 +79,20 @@ export default () => {
     }
 
     return (
-        <Table bordered hover>
-            <thead>
-                <tr>
-                    <th>DID</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {participants.map(participant => <Single data={participant}></Single>)}
-            </tbody>
-        </Table>
+        <div>
+            <p>Sent an invite to <b>{cohortSize}</b> member(s). Received a reply from <b>{participants.length}</b> member(s)</p>
+            <Table bordered hover>
+                <thead>
+                    <tr>
+                        <th>DID</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {participants.map(participant => <Single data={participant}></Single>)}
+                </tbody>
+            </Table>
+        </div>
     )
 }
