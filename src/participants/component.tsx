@@ -20,17 +20,18 @@ const statusName: Record<number, string> = {
 export default () => {
     const { id } = useParams();
     const participants = useSelector((state: RootState) => state.participants.participants)
-    let cohortSize = 0;
+    let cohortSize = useSelector((state: RootState) => {
+        if (id !== undefined) {
+            return state.cohorts.cohortsById[id].size
+        }
+        return 0
+    })
     const isLoading = useSelector((state: RootState) => state.participants.isLoading)
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(fetchParticipants(id))
     }, [id, dispatch])
-
-    useEffect(() => {
-        cohortSize = useSelector((state: RootState) => state.cohorts.cohortsById[id].size);
-    }, [id])
 
     const Single = (props: any) => {
         const data = props.data as Participant;
