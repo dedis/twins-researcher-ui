@@ -21,7 +21,7 @@ export default () => {
     const { id } = useParams();
     const participants = useSelector((state: RootState) => state.participants.participants)
     let cohortSize = useSelector((state: RootState) => {
-        if (id !== undefined) {
+        if (state.cohorts.cohortsById[id] !== undefined) {
             return state.cohorts.cohortsById[id].size
         }
         return 0
